@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: f1_raw
+    project: f1-pipeline-497820
+    dataset: f1_raw
+    tables:
+      - name: laps
+      - name: pit_stops
