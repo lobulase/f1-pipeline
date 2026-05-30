@@ -20,6 +20,7 @@ End-to-end data pipeline for Formula 1 race analytics.
 https://datastudio.google.com/s/kB36AHIMmRM
 
 ## Results
-- 1,129 laps ingested across 20 drivers
-- 43 pit stops recorded
-- Fastest lap: 92.61 seconds (VER)
+- 26,604 laps ingested across 24 races and 20 drivers
+- 849 pit stops recorded across the full season
+- 5 tyre compounds used: Hard, Medium, Soft, Intermediate, Wet
+- Fastest lap of the season: 92.61 seconds (RUS, Soft tyres)
