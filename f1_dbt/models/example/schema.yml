@@ -1,21 +1,63 @@
-
 version: 2
 
+sources:
+  - name: f1_raw
+    project: f1-pipeline-497820
+    dataset: f1_raw
+    tables:
+      - name: laps
+        columns:
+          - name: Driver
+            tests:
+              - not_null
+          - name: LapTimeSeconds
+            description: "Lap time in seconds - can be null for safety car laps or retirements"
+          - name: Compound
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['SOFT', 'MEDIUM', 'HARD', 'INTERMEDIATE', 'WET']
+          - name: Race
+            tests:
+              - not_null
+
+      - name: pit_stops
+        columns:
+          - name: Driver
+            tests:
+              - not_null
+          - name: PitDurationSeconds
+            description: "Pit stop duration in seconds - can be null for in-laps at race end"
+
 models:
-  - name: my_first_dbt_model
-    description: "A starter dbt model"
+  - name: avg_lap_by_driver
+    description: "Average and best lap times per driver per race per compound"
     columns:
-      - name: id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
+      - name: Driver
+        description: "Driver abbreviation e.g. VER, HAM"
+        tests:
+          - not_null
+      - name: avg_lap_seconds
+        description: "Average lap time in seconds"
+        tests:
+          - not_null
+      - name: Race
+        description: "Race name e.g. Bahrain, Monaco"
+        tests:
           - not_null
 
-  - name: my_second_dbt_model
-    description: "A starter dbt model"
+  - name: compound_analysis
+    description: "Average lap time per tyre compound across the full season"
     columns:
-      - name: id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
+      - name: Compound
+        tests:
           - not_null
+          - unique
+
+  - name: race_summary
+    description: "Fastest lap and average lap time per race"
+    columns:
+      - name: Race
+        tests:
+          - not_null
+          - unique
