@@ -1,6 +1,7 @@
 select
     Driver,
     Race,
+    Year,
     Round,
     Compound,
     round(avg(LapTimeSeconds), 3) as avg_lap_seconds,
@@ -9,5 +10,5 @@ select
 from {{ source('f1_raw', 'laps') }}
 where LapTimeSeconds is not null
   and LapTimeSeconds > 60
-group by Driver, Race, Round, Compound
+group by Driver, Race, Year, Round, Compound
 order by Race, avg_lap_seconds
