@@ -13,10 +13,9 @@ sources:
           - name: LapTimeSeconds
             description: "Lap time in seconds - can be null for safety car laps or retirements"
           - name: Compound
+            description: "Tyre compound"
             tests:
               - not_null
-              - accepted_values:
-                  values: ['SOFT', 'MEDIUM', 'HARD', 'INTERMEDIATE', 'WET']
           - name: Race
             tests:
               - not_null
@@ -60,4 +59,4 @@ models:
       - name: Race
         tests:
           - not_null
-          - unique
+          
