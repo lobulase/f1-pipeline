@@ -15,7 +15,7 @@ client = bigquery.Client(project="f1-pipeline-497820")
 
 query = """
     SELECT
-        Driver, Race, Round, Compound,
+        Driver, Race, Year, Round, Compound,
         TyreLife, Stint, LapNumber,
         LapTimeSeconds
     FROM `f1-pipeline-497820.f1_raw.laps`
@@ -38,12 +38,13 @@ le_race     = LabelEncoder()
 df["Driver_enc"]   = le_driver.fit_transform(df["Driver"])
 df["Compound_enc"] = le_compound.fit_transform(df["Compound"])
 df["Race_enc"]     = le_race.fit_transform(df["Race"])
-
+df["Year_enc"]     = df["Year"] - 2024  # 2024=0, 2025=1, 2026=2
 # Features we'll use to predict lap time
 features = [
     "Driver_enc",
     "Compound_enc",
     "Race_enc",
+    "Year_enc",
     "TyreLife",
     "Stint",
     "LapNumber"
@@ -103,10 +104,11 @@ results["Error"]            = abs(results["ActualLapTime"] - results["PredictedL
 results["Driver"]   = le_driver.inverse_transform(results["Driver_enc"])
 results["Compound"] = le_compound.inverse_transform(results["Compound_enc"])
 results["Race"]     = le_race.inverse_transform(results["Race_enc"])
+results["Year"] = df.loc[X_test.index, "Year_enc"].values
 
 # Keep only readable columns
 output = results[[
-    "Driver","Race","Compound",
+    "Driver","Race","Year","Compound",
     "TyreLife","LapNumber",
     "ActualLapTime","PredictedLapTime","Error"
 ]].round(3)
